@@ -8,7 +8,7 @@ contract Faucet{
     uint cooldown;
     mapping (address => uint) timeouts;
     
-    event DonateTo(address indexed to);
+    event DripTo(address indexed to);
     event Deposit(address indexed from, uint amount);
     
     constructor() {
@@ -18,15 +18,15 @@ contract Faucet{
     
     //  Sends 0.1337 FTM to the sender when the faucet has enough funds
     //  Only allows one donation every 30 mintues
-    function donate() external{
+    function drip() external{
         
         require(address(this).balance >= 0.1337 ether, "This faucet is empty. Please check back later.");
-        require(timeouts[msg.sender] <= block.timestamp - cooldown minutes, "You can request a donation once every " + cooldown + " minutes. Try again in " + (timeouts[msg.sender] + cooldown minutes - block.timestamp) + " minutes.");
+        require(timeouts[msg.sender] <= block.timestamp - 5 minutes, "You can request a donation once every 5 minutes. Try again later.");
         
         msg.sender.transfer(0.1337 ether);
         timeouts[msg.sender] = block.timestamp;
         
-        emit DonateTo(msg.sender);
+        emit DripTo(msg.sender);
     }
     
     //  Sending Tokens to this faucet fills it up
